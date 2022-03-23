@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <div class="modal-title">
+    <h2>{{new.source}}</h2>
+    <a style="color:gray">{{new.date}}</a>
+  </div>
+  <i class=" btn close border-0" (click)="activeModal.dismiss('Cross click')">&times;</i>
+</div>
+<div class="modal-body">
+  <h5>{{new.title}}</h5>
+  {{new.info}}
+  <p style="color:gray">For more details click <a href="{{new.url}}">here</a></p>
+  <div class="card mt-5">
+    <div class="m-3">
+      <p>Share</p>
+    </div>
+    <div class="d-flex ml-2">
+      <h1 class="mb-4">
+        <a class="p-2" target="_blank" target="_blank"
+           href="https://twitter.com/intent/tweet?text={{new.title}}&url={{new.url}}">
+          <i class="twitter-share-button fa-brands fa-twitter" style="color:#1e90ff;"></i>
+        </a>
+        <a class="fb-share-button" data-layout="button_count" data-size="small">
+          <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{new.url}}"
+             class="fb-xfbml-parse-ignore"><i class="fa-brands fa-facebook-square ml-3"
+                                              style="color:#0000ff "></i></a>
+        </a>
+      </h1>
+    </div>
+  </div>
+</div>

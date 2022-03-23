@@ -1,0 +1,10 @@
+.image-class {
+  z-index: -100;
+  background: url('../assets/background-graph.jpg') no-repeat top;
+  background-size: cover;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  /*display:block;*/
+  opacity: 0.2;
+}

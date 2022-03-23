@@ -1,0 +1,27 @@
+<div class="container mt-3 " style="padding-top: 10vh; ">
+  <form action="/action_page.php">
+    <h4 class="text-center mb-4 font-weight-bold">{{title}}</h4>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="input-group mb-3 rounded-pill col-md-4" style="border:3px solid #2224ab">
+        <input type="text" class="form-control border-0 ml-3 " placeholder="Enter stock ticker symbol"
+               [(ngModel)]="stock_symbol" name="stock" id="stock">
+        <div class="input-group-append">
+          <button class="btn" type="submit" (click)="searchStock()">
+            <i class="bi bi-search" style="color:#2224ab"></i>
+          </button>
+          <button class=" border-0 mr-3" style="background-color:white" onclick="stock.value=''" (click)="clear()">
+            <i class="bi bi-x-lg" style="color:#2224ab;font-weight:bold"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <router-outlet></router-outlet>
+</div>
+<!--<app-home></app-home>-->
+
+
+
+
+

@@ -1,0 +1,206 @@
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">-->
+<!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"-->
+<!--        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"-->
+<!--        crossorigin="anonymous"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"-->
+<!--        integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"-->
+<!--        crossorigin="anonymous"></script>-->
+<!--<div id="fb-root"></div>-->
+<!--<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v13.0"-->
+<!--        nonce="VJH8zCoh"></script>-->
+
+<div class="container-fluid mt-5" *ngIf="buy">
+  <div class="row">
+    <div class="col-4">
+      <a class="h3 fw-bold">{{stock.ticker}}<i class="btn bi bi-star align-items-center m-3" style="{{watch}}"
+                                               (click)="AdjustWatch()"></i></a>
+      <h5 class="fw-normal " style="color:gray">{{stock.name}}</h5>
+      <p>{{stock.exchange}}</p>
+      <button type="button" class="btn btn-success m-1" *ngIf="buy" (click)="BuyStock()">Buy</button>
+      <button type="button" class="btn btn-danger m-1" *ngIf="buy" (click)="BuyStock()">Sell</button>
+    </div>
+    <div class="col-4">
+      <div class="row"><img class="img-fluid mx-auto d-block" style="width: 30%;" [src]=stock.logo>
+      </div>
+    </div>
+    <div class="col-4 ">
+      <div class=" text-right" style="{{price_color}}">
+        <h2 class="fw-bold">
+
+          {{prices.lastP}}</h2>
+
+        <h3 class="fw-normal"><i class="bi bi-caret-up-fill" *ngIf="up_down"></i>
+          <i class="bi bi-caret-down-fill" *ngIf="up_down==false"></i>{{prices.drop}}{{drop_percent}}</h3>
+      </div>
+      <div class="text-right">
+        {{prices.time}}
+      </div>
+    </div>
+  </div>
+  <h5 class="mt-1 text-center font-weight-bold" style="{{prices.market_color}}">{{prices.market_open}}</h5>
+
+  <div class="container-fluid">
+    <mat-tab-group mat-stretch-tabs mat-align-tabs="center" class="mat-elevation" animationDuration="0ms">
+      <mat-tab label="Summary">
+        <div class="row m-0">
+          <div class="col-sm-6 ">
+            <div class="d-flex mt-4 pb-2 pt-2  justify-content-center">
+              <table class="table-sm table-borderless table-condensed">
+                <tbody>
+                <tr>
+                  <td class='font-weight-bold'>High Price:</td>
+                  <td>{{prices.High}}</td>
+                </tr>
+                <tr>
+                  <td class='font-weight-bold'>Low Price</td>
+                  <td> {{prices.Low}}</td>
+                </tr>
+                <tr>
+                  <td class='font-weight-bold'>Open Price:</td>
+                  <td> {{prices.Open}}</td>
+                </tr>
+                <tr>
+                  <td class='font-weight-bold'>Prev. Close:</td>
+                  <td>{{prices.Prev}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="text-center mt-5">
+              <h5><a class='font-weight-bold ' href='{{stock.weburl}}' style="color:#000"><u>
+                About the company </u></a>
+              </h5>
+            </div>
+            <div class="text-left mt-5 p-3">
+              <ul class="p-2">
+                <li class="p-1" style="list-style:none">
+                  <a class='font-weight-bold h6'>IPO Start Date:</a> {{stock.ipo}}
+                </li>
+                <li class="p-1" style="list-style:none">
+                  <a class='font-weight-bold h6'>Industry: </a> {{stock.finnhubInducstry}}
+                </li>
+                <li class="p-1" style="list-style:none">
+                  <a class='font-weight-bold h6'>Webpage:</a><a href='{{stock.weburl}}'>{{stock.weburl}}</a>
+                </li>
+                <li class="p-1" style="list-style:none">
+                  <a class="p-1" class='font-weight-bold h6'>Company Peers:</a></li>
+                <li style="list-style:none">
+                  <a *ngFor="let p of peers">
+                    <a routerLink="/search/{{p}}">{{p}},</a>
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-6 mt-5 ml-0 p-0 pb-4">
+
+            <highcharts-chart class="pr-1"
+                              [Highcharts]="Highcharts"
+                              [constructorType]="'stockChart'"
+                              [options]="chartOptions"
+                              style="width: 100%; height: 400px; display: block;"
+                              [callbackFunction]="chartCallback"
+                              [(update)]="updateDemo2"
+            >
+            </highcharts-chart>
+
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Top News">
+        <div class="container-fluid py-4 px-0">
+          <div class="row m-0 pl-5 pr-2">
+            <div *ngFor="let new of news"
+                 class="card col-md-5 mx-3 my-2 btn" (click)="open(new)">
+              <div class="card-body row">
+                <div class="col-md-3 p-0">
+                  <img class="card-img" src="{{new.img}}">
+                </div>
+                <div class="col">
+                  <p class="card-text text-left">{{new.title}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </mat-tab>
+
+      <mat-tab label="Charts">
+        <highcharts-chart class="pr-1"
+                          [Highcharts]="Highcharts_4"
+                          [constructorType]="'stockChart'"
+                          [options]="chartOptions4"
+                          [callbackFunction]="chartCallback"
+                          style="width: 100%; height: 400px; display: block;"
+                          [(update)]="updateDemo2">
+        </highcharts-chart>
+      </mat-tab>
+      <mat-tab label="Insights">
+        <!--      <div class="m-5">-->
+        <div>
+          <h5 class="text-center font-weight-bold m-3">Social Sentiments</h5>
+          <!--      </div>-->
+
+          <div class='d-flex justify-content-center m-2'>
+
+            <table class="table table-sm text-center w-50 " style="background-color: white;color:grey">
+              <tbody>
+              <tr>
+                <th class='font-weight-bold ' style='background-color:#e9ecef ;color:grey'>{{stock.name}}</th>
+                <th class='font-weight-bold ' style='background-color:#e9ecef ;color:grey'>Reddit</th>
+                <th class='font-weight-bold ' style='background-color:#e9ecef ;color:grey'>Twitter</th>
+              </tr>
+              <tr>
+                <td class='font-weight-bold ' style='background-color:#e9ecef;color:grey'>Mentions</td>
+                <td>{{Reddit_total}}</td>
+                <td>{{Twitter_total}}</td>
+              </tr>
+              <tr>
+                <td class='font-weight-bold ' style='background-color:#e9ecef;color:grey'>Positive Mentions</td>
+                <td>{{sentiment.R_p}}</td>
+                <td>{{sentiment.T_p}}</td>
+              </tr>
+              <tr>
+                <td class='font-weight-bold ' style='background-color:#e9ecef;color:grey'>Negative Mentions</td>
+                <td>{{sentiment.R_n}}</td>
+                <td>{{sentiment.T_n}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row m-0">
+            <div class="col-sm-6 ">
+              <highcharts-chart
+                [Highcharts]="highcharts"
+                [options]="chartOptions2"
+                [callbackFunction]="chartCallback"
+                style="display: block;"
+                [(update)]="updateDemo2">
+              </highcharts-chart>
+            </div>
+            <div class="col-sm-6">
+              <highcharts-chart
+                [Highcharts]="Highcharts_3"
+                [options]="chartOptions3"
+                style="display: block;" [callbackFunction]="chartCallback"
+                [(update)]="updateDemo2">
+              </highcharts-chart>
+            </div>
+            <!--            -->
+          </div>
+        </div>
+
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+
+<div class="container-fluid mt-5 p-5" *ngIf="buy==false">
+  <div class="d-flex justify-content-center align-middle">
+    <div class="spinner-border text-primary mt-5 "></div>
+  </div>
+</div>
+
+
